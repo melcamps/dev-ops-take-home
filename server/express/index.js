@@ -1,3 +1,3 @@
-'use strict';
+"use strict";
 
-module.exports = require('express/lib/express');
+module.exports = require("express/lib/express");

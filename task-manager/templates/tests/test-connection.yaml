@@ -1,0 +1,16 @@
+# prettier-ignore
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ include "task-manager.fullname" . }}-test-connection"
+  labels:
+    {{- include "task-manager.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "task-manager.fullname" . }}:{{ .Values.service.port }}']
+      restartPolicy: Never

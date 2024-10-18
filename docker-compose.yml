@@ -1,6 +1,6 @@
 services:
   backend:
-    build: ./backend
+    image: melcamps/backend
     ports:
       - "3000:3000"
     environment:
@@ -9,6 +9,7 @@ services:
       - mongo
 
   frontend:
+    image: melcamps/frontend
     build: ./frontend
     ports:
       - "8080:8080"

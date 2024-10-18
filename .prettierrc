@@ -1,0 +1,6 @@
+{
+  "editor.formatOnSave": true,
+  "yaml.format.enable": true,
+  "yaml.validate": true,
+  "prettier.requireConfig": true
+}

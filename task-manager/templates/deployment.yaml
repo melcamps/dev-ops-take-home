@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  replicas: { { .Values.replicaCount } }
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: "backend:latest"
+          ports:
+            - containerPort: { { .Values.service.backend.port } }
+          env:
+            - name: MONGO_URL
+              value: { { .Values.mongodb.uri } }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: { { .Values.replicaCount } }
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: "frontend:latest"
+          ports:
+            - containerPort: { { .Values.service.frontend.port } }

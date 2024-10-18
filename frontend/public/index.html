@@ -1,85 +1,85 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Task Manager</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <h1>Task Manager</h1>
     <form id="taskForm">
-        <input type="text" id="title" placeholder="Title" required>
-        <input type="text" id="description" placeholder="Description" required>
-        <button type="submit">Add Task</button>
+      <input type="text" id="title" placeholder="Title" required />
+      <input type="text" id="description" placeholder="Description" required />
+      <button type="submit">Add Task</button>
     </form>
     <ul id="taskList"></ul>
 
     <script>
-        const taskForm = document.getElementById('taskForm');
-        const taskList = document.getElementById('taskList');
+      const taskForm = document.getElementById("taskForm");
+      const taskList = document.getElementById("taskList");
 
-        taskForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const title = document.getElementById('title').value;
-            const description = document.getElementById('description').value;
+      taskForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const title = document.getElementById("title").value;
+        const description = document.getElementById("description").value;
 
-            try {
-                const response = await fetch('http://localhost:3000/tasks', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ title, description }),
-                });
+        try {
+          const response = await fetch("http://localhost:3000/tasks", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title, description }),
+          });
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
 
-                taskForm.reset();
-                loadTasks();
-            } catch (error) {
-                console.error('Error adding task:', error);
-                alert('Failed to add task. Please try again.');
-            }
-        });
-
-        async function loadTasks() {
-            try {
-                const response = await fetch('http://localhost:3000/tasks');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const tasks = await response.json();
-                taskList.innerHTML = '';
-                tasks.forEach(task => {
-                    const li = document.createElement('li');
-                    li.textContent = `${task.title}: ${task.description}`;
-
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Delete';
-                    deleteButton.onclick = async () => {
-                        try {
-                            await fetch(`http://localhost:3000/tasks/${task._id}`, {
-                                method: 'DELETE',
-                            });
-                            loadTasks();
-                        } catch (error) {
-                            console.error('Error deleting task:', error);
-                            alert('Failed to delete task. Please try again.');
-                        }
-                    };
-
-                    li.appendChild(deleteButton);
-                    taskList.appendChild(li);
-                });
-            } catch (error) {
-                console.error('Error loading tasks:', error);
-                alert('Failed to load tasks. Please try again later.');
-            }
+          taskForm.reset();
+          loadTasks();
+        } catch (error) {
+          console.error("Error adding task:", error);
+          alert("Failed to add task. Please try again.");
         }
+      });
 
-        loadTasks();
+      async function loadTasks() {
+        try {
+          const response = await fetch("http://localhost:3000/tasks");
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          const tasks = await response.json();
+          taskList.innerHTML = "";
+          tasks.forEach((task) => {
+            const li = document.createElement("li");
+            li.textContent = `${task.title}: ${task.description}`;
+
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.onclick = async () => {
+              try {
+                await fetch(`http://localhost:3000/tasks/${task._id}`, {
+                  method: "DELETE",
+                });
+                loadTasks();
+              } catch (error) {
+                console.error("Error deleting task:", error);
+                alert("Failed to delete task. Please try again.");
+              }
+            };
+
+            li.appendChild(deleteButton);
+            taskList.appendChild(li);
+          });
+        } catch (error) {
+          console.error("Error loading tasks:", error);
+          alert("Failed to load tasks. Please try again later.");
+        }
+      }
+
+      loadTasks();
     </script>
-</body>
+  </body>
 </html>

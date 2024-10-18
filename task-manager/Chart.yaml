@@ -1,0 +1,4 @@
+apiVersion: v2
+name: task-manager
+description: A Helm chart for deploying a task management application.
+version: 0.1.0
